@@ -19,7 +19,10 @@
             @mouseenter="showSearchSelect"
             @mouseleave="hideSearchSelect"
           >
-            <button type="button" class="flex items-center w-full text-green-100 border border-gray-100 rounded-md px-8 py-2 mb-2">
+            <button
+              type="button"
+              class="flex items-center w-full text-green-100 border border-gray-100 rounded-md px-8 py-2 mb-2"
+            >
               <span class="mr-auto">{{ searchType }}</span>
               <span v-show="!isSearchSelectShow" class="material-icons">expand_more</span>
               <span v-show="isSearchSelectShow" class="material-icons">expand_less</span>
@@ -54,17 +57,19 @@
           </button>
         </div>
       </section>
-      <Carousel :title="true" />
-      <RecentActivities />
-      <HotSpot />
-      <ReturnTasty />
+      <Carousel :title="true" :places="swiperPics" />
+      <RecentActivities :activities="activities" />
+      <HotSpot :attractions="attractions" />
+      <ReturnTasty :restaurants="restaurants" />
     </main>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
-import Carousel from '~/components/Carousel.vue'
+import JsSHA from 'jssha'
+import pthReq from '@/api/pth-req'
+import Carousel from '@/components/Carousel.vue'
 import RecentActivities from '@/components/index/RecentActivities.vue'
 import HotSpot from '@/components/index/HotSpot.vue'
 import ReturnTasty from '@/components/index/ReturnTasty.vue'
@@ -76,10 +81,71 @@ export default Vue.extend({
     HotSpot,
     ReturnTasty
   },
+  async asyncData ({ $axios, env }) {
+    const reqQty = 100
+    const getRandomInt = max => Math.floor(Math.random() * max)
+
+    const getRamdomArr = (length) => {
+      const randomNums = []
+      while (randomNums.length < length) {
+        const num = getRandomInt(reqQty)
+        if (!randomNums.includes(num)) {
+          randomNums.push(num)
+        }
+      }
+      return randomNums
+    }
+
+    const setPthReqHeader = (data) => {
+      $axios.defaults.headers = data
+    }
+
+    const getAuthorizationHeader = () => {
+      const AppID = env.TRX_ID
+      const AppKey = env.TRX_KEY
+      const GMTString = new Date().toUTCString()
+      const ShaObj = new JsSHA('SHA-1', 'TEXT')
+      ShaObj.setHMACKey(AppKey, 'TEXT')
+      ShaObj.update('x-date: ' + GMTString)
+      const HMAC = ShaObj.getHMAC('B64')
+      const Authorization = `hmac username="${AppID}", algorithm="hmac-sha1", headers="x-date", signature="${HMAC}"`
+      setPthReqHeader({ Authorization, 'X-Date': GMTString })
+    }
+
+    getAuthorizationHeader()
+
+    const filterHasPicture = "$filter=contains(Picture/PictureUrl1, 'http')"
+    const [
+      { data: activitiesData },
+      { data: attractionsData },
+      { data: restaurantsData }
+    ] = await Promise.all([
+      $axios.get(`${env.TRX_URL}/v2/Tourism/Activity?${filterHasPicture}&$top=${reqQty}`),
+      $axios.get(`${env.TRX_URL}/v2/Tourism/ScenicSpot?${filterHasPicture}&$top=${reqQty}`),
+      $axios.get(`${env.TRX_URL}/v2/Tourism/Restaurant?${filterHasPicture}&$top=${reqQty}`)
+    ])
+
+    const [r1, r2, r3, r4] = getRamdomArr(4)
+    const activities = [activitiesData[r1], activitiesData[r2], activitiesData[r3], activitiesData[r4]]
+    const attractions = [attractionsData[r1], attractionsData[r2], attractionsData[r3], attractionsData[r4]]
+    const restaurants = [restaurantsData[r1], restaurantsData[r2], restaurantsData[r3], restaurantsData[r4]]
+
+    const [r5, r6, r7, r8, r9, r10] = getRamdomArr(6)
+    const attract = attractionsData
+    const swiperPics = [attract[r5], attract[r6], attract[r7], attract[r8], attract[r9], attract[r10]]
+
+    return {
+      activities,
+      attractions,
+      restaurants,
+      swiperPics
+    }
+  },
   data () {
     return {
       isSearchSelectShow: false,
-      searchType: '探索景點'
+      searchType: '探索景點',
+      activities: []
     }
   },
   methods: {
@@ -92,6 +158,20 @@ export default Vue.extend({
     },
     hideSearchSelect () {
       this.isSearchSelectShow = false
+    },
+    getAuthorizationHeader () {
+      const AppID = process.env.TRX_ID
+      const AppKey = process.env.TRX_KEY
+      const GMTString = new Date().toUTCString()
+      const ShaObj = new JsSHA('SHA-1', 'TEXT')
+      ShaObj.setHMACKey(AppKey, 'TEXT')
+      ShaObj.update('x-date: ' + GMTString)
+      const HMAC = ShaObj.getHMAC('B64')
+      const Authorization = `hmac username="${AppID}", algorithm="hmac-sha1", headers="x-date", signature="${HMAC}"`
+      this.setPthReqHeader({ Authorization, 'X-Date': GMTString })
+    },
+    setPthReqHeader (data) {
+      pthReq.defaults.headers = data
     }
   }
 })

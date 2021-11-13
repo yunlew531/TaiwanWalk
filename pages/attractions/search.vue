@@ -17,7 +17,11 @@
             <span class="block font-medium text-green-200 mr-auto">全部縣市</span>
             <span class="material-icons text-green-500 block">expand_more</span>
           </button>
-          <simplebar v-show="isCitySelectShow" data-simplebar-auto-hide="false" class="city-list border border-gray-100 absolute mt-2">
+          <simplebar
+            v-show="isCitySelectShow"
+            data-simplebar-auto-hide="false"
+            class="city-list border border-gray-100 absolute mt-2"
+          >
             <ul class="w-full overflow-hidden bg-white-100 rounded-md pr-6">
               <li class="text-green-300 border-b border-gray-100 cursor-pointer px-8 py-2">
                 全部縣市

@@ -2,28 +2,21 @@
   <section class="relative mx-12 mb-12">
     <client-only>
       <swiper ref="swiperRef" :options="swiperOption" class="overflow-x-hidden rounded-2xl">
-        <div class="swiper-slide">
-          <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1174&q=80" alt="" class="w-full object-cover">
+        <div
+          v-for="place in places"
+          :key="place.ID"
+          class="swiper-slide"
+        >
+          <img
+            v-if="place.Picture"
+            :src="place.Picture.PictureUrl1"
+            :alt="place.Picture.PictureDescription1"
+            class="w-full object-cover"
+          >
           <h2 v-if="title" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white-100 text-3xl">
-            <span>新北市</span>
-            <span class="mx-2">|</span>
-            <span>不厭亭</span>
-          </h2>
-        </div>
-        <div class="swiper-slide">
-          <img src="https://images.unsplash.com/photo-1520746023174-87501e47217c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1166&q=80" alt="" class="w-full object-cover">
-          <h2 v-if="title" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white-100 text-3xl">
-            <span>新北市</span>
-            <span class="mx-2">|</span>
-            <span>不厭亭</span>
-          </h2>
-        </div>
-        <div class="swiper-slide">
-          <img src="https://images.unsplash.com/photo-1495977958109-d0a07c767f0e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80" alt="" class="w-full object-cover">
-          <h2 v-if="title" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white-100 text-3xl">
-            <span>新北市</span>
-            <span class="mx-2">|</span>
-            <span>不厭亭</span>
+            <span>{{ place.City }}</span>
+            <span v-if="place.City" class="mx-2">|</span>
+            <span>{{ place.Name }}</span>
           </h2>
         </div>
         <div slot="pagination" class="swiper-pagination position-absolute" />
@@ -44,6 +37,11 @@ export default {
     title: {
       type: Boolean,
       default: false
+    },
+    places: {
+      type: Array,
+      default: () => ([]),
+      required: true
     }
   },
   data () {

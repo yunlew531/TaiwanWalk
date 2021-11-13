@@ -32,6 +32,12 @@ export default {
     { src: '~/plugins/simple-bar', ssr: true },
   ],
 
+  env: {
+    TRX_ID: process.env.TRX_ID,
+    TRX_KEY: process.env.TRX_KEY,
+    TRX_URL: process.env.TRX_URL
+  },
+
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: false,
 
@@ -46,7 +52,8 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/dayjs'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios

@@ -10,16 +10,33 @@
       </nuxt-link>
     </div>
     <ul class="grid grid-cols-4 gap-x-8 px-12">
-      <li v-for="location in 4" :key="location">
-        <img src="https://images.unsplash.com/photo-1636705502546-a08a1f3750bf?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80" alt="" class="h-48 w-full object-cover rounded-2xl mb-3">
+      <li v-for="restaurant in restaurants" :key="restaurant.ID">
+        <img
+          v-if="restaurant.Picture"
+          :src="restaurant.Picture.PictureUrl1"
+          :alt="restaurant.Picture.PictureDescription1"
+          class="h-48 w-full object-cover rounded-2xl mb-3"
+        >
         <h2 class="text-xl font-bold mb-1">
-          龜山島牛奶海
+          {{ restaurant.Name }}
         </h2>
         <h4 class="text-green-300 mr-auto">
           <span class="material-icons mr-1 text-sm">fmd_good</span>
-          <span>新北市</span>
+          <span>{{ restaurant.City }}</span>
         </h4>
       </li>
     </ul>
   </section>
 </template>
+
+<script>
+export default {
+  props: {
+    restaurants: {
+      type: Array,
+      default: () => ([]),
+      required: true
+    }
+  }
+}
+</script>
