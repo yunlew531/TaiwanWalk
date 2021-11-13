@@ -10,12 +10,14 @@ module.exports = {
         100: '#6E7D60',
         200: '#7F977B',
         300: '#646464',
-        400: '#65895F'
+        400: '#65895F',
+        500: '#737373',
       },
       gray: {
         100: '#E5E5E5',
         200: '#F9F9F9',
         300: '#C4C4C4',
+        400: '#9E9E9E',
       },
       black: {
         100: '#1E1E1E',
@@ -35,7 +37,9 @@ module.exports = {
     extend: {},
   },
   variants: {
-    extend: {},
+    extend: {
+      outlineWidth: ['focus']
+    },
   },
   plugins: [],
 }

@@ -2,7 +2,7 @@
   <section>
     <div class="flex items-center px-16 mb-5">
       <h3 class="text-4xl font-light text-black-100 mr-auto">
-        還有這些不能錯過的景點
+        {{ title }}
       </h3>
       <nuxt-link to="/" class="flex items-center text-orange-100">
         <span>更多宜蘭縣景點</span>
@@ -23,3 +23,15 @@
     </ul>
   </section>
 </template>
+
+<script>
+export default {
+  props: {
+    title: {
+      type: String,
+      default: '標題',
+      requied: true
+    }
+  }
+}
+</script>

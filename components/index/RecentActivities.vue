@@ -10,8 +10,14 @@
       </nuxt-link>
     </div>
     <ul class="grid grid-cols-2 px-12 gap-x-8 gap-y-3">
-      <li v-for="location in 4" :key="location" class="flex h-40 rounded-lg overflow-hidden border border-gray-100 bg-gray-200">
-        <img src="https://images.unsplash.com/photo-1636701943721-c3dbdef953d8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80" alt="" class="w-40 flex-shrink-0 h-full">
+      <li
+        v-for="location in 4"
+        :key="location"
+        class="recent-activity-card flex h-40 rounded-lg overflow-hidden border border-gray-100 bg-gray-200"
+      >
+        <div class="w-40 flex-shrink-0 h-full overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1636701943721-c3dbdef953d8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80" alt="" class="w-full h-full">
+        </div>
         <div class="flex flex-col w-full px-8 py-4">
           <span class="text-green-300">2021/10/30 - 2021/11/13</span>
           <h2 class="flex-grow text-black-200 text-xl font-bold">
@@ -32,3 +38,16 @@
     </ul>
   </section>
 </template>
+
+<style lang="scss">
+.recent-activity-card {
+  img {
+    transition: transform 0.3s;
+  }
+  &:hover {
+    img {
+      transform: scale(1.1);
+    }
+  }
+}
+</style>

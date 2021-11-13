@@ -19,15 +19,17 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    '@/assets/styleSheets/main.scss',
     'swiper/css',
     'swiper/css/pagination',
     'swiper/css/navigation',
+    'simplebar/dist/simplebar.min.css',
+    '@/assets/styleSheets/main.scss',
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '~/plugins/vue-awesome-swiper', ssr: false },
+    { src: '~/plugins/simple-bar', ssr: true },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

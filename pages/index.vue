@@ -14,15 +14,41 @@
           </h4>
         </div>
         <div class="input-container -mb-2">
-          <input type="text" class="w-full border border-gray-100 rounded-md px-8 py-2 mb-2">
+          <div
+            class="relative"
+            @mouseenter="showSearchSelect"
+            @mouseleave="hideSearchSelect"
+          >
+            <button type="button" class="flex items-center w-full text-green-100 border border-gray-100 rounded-md px-8 py-2 mb-2">
+              <span class="mr-auto">{{ searchType }}</span>
+              <span v-show="!isSearchSelectShow" class="material-icons">expand_more</span>
+              <span v-show="isSearchSelectShow" class="material-icons">expand_less</span>
+            </button>
+            <ul
+              v-show="isSearchSelectShow"
+              class="selects w-full absolute text-black-200 bg-white-100 border border-gray-100 rounded-md"
+            >
+              <li class="cursor-pointer px-8 py-2" @click="selectSearchType('探索景點')">
+                探索景點
+              </li>
+              <li class="cursor-pointer px-8 py-2" @click="selectSearchType('節慶活動')">
+                節慶活動
+              </li>
+              <li class="cursor-pointer px-8 py-2" @click="selectSearchType('品嚐美食')">
+                品嚐美食
+              </li>
+            </ul>
+          </div>
           <input
             type="text"
             placeholder="你想去哪裡？請輸入關鍵字"
-            class="w-full border border-gray-100 rounded-md bg-gray-200 px-8 py-2 mb-2">
+            class="w-full border border-gray-100 rounded-md bg-gray-200 px-8 py-2 mb-2"
+          >
           <button
             type="button"
             class="w-full flex justify-center items-center text-white-100 font-bold bg-green-200
-              rounded-md px-8 py-2 mb-2">
+              rounded-md px-8 py-2 mb-2"
+          >
             <span class="material-icons mr-3">search</span>
             <span class="mr-8">搜</span><span>尋</span>
           </button>
@@ -49,6 +75,24 @@ export default Vue.extend({
     RecentActivities,
     HotSpot,
     ReturnTasty
+  },
+  data () {
+    return {
+      isSearchSelectShow: false,
+      searchType: '探索景點'
+    }
+  },
+  methods: {
+    selectSearchType (select) {
+      this.searchType = select
+      this.hideSearchSelect()
+    },
+    showSearchSelect () {
+      this.isSearchSelectShow = true
+    },
+    hideSearchSelect () {
+      this.isSearchSelectShow = false
+    }
   }
 })
 </script>
@@ -62,5 +106,22 @@ export default Vue.extend({
 }
 .input-container {
   max-width: 350px;
+  width: 100%;
+}
+.selects {
+  > li {
+    @apply border-b border-gray-100;
+    &:last-of-type {
+      border-bottom: none;
+    }
+    &:hover {
+      @apply text-green-100;
+    }
+  }
+  &::before {
+    content: '';
+    width: 100%;
+    @apply h-5 absolute -top-5;
+  }
 }
 </style>

@@ -1,7 +1,9 @@
 <template>
   <div>
     <Header />
-    <Nuxt />
+    <div class="container mx-auto pt-20">
+      <Nuxt />
+    </div>
     <Footer />
   </div>
 </template>
@@ -17,3 +19,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.container {
+  min-height: calc(100vh - 64px);
+}
+</style>

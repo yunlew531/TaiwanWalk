@@ -89,7 +89,7 @@
           </div>
         </div>
       </section>
-      <MoreList title="還有這些不能錯過的景點" />
+      <MoreList title="還有這些不能錯過活動" />
       <div class="mb-32" />
     </main>
   </div>
