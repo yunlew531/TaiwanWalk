@@ -134,6 +134,7 @@
         v-show="type === 'searched'"
         class="mx-12 mb-20"
         :data="displayPlaces"
+        @clickItem="pushPage"
       />
       <Pagination
         v-show="type === 'searched'"
@@ -202,6 +203,9 @@ export default {
     changePage (page) {
       window.scrollTo({ top: 0 })
       this.pages.currentPage = page
+    },
+    pushPage (activitiesId) {
+      this.$router.push(`/activity/${activitiesId}`)
     },
     async searchPlace () {
       this.type = 'searched'

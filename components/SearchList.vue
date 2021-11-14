@@ -6,6 +6,7 @@
         :src="place.Picture.PictureUrl1"
         :alt="place.Picture.PictureDescription1 || place.Name"
         class="h-48 w-full object-cover rounded-2xl mb-3"
+        @click="$emit('clickItem', place.ID)"
       >
       <h2 class="text-xl font-bold mb-1">
         {{ place.Name }}

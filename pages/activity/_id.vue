@@ -98,13 +98,19 @@
           </div>
         </div>
       </section>
-      <MoreList title="還有這些不能錯過活動" :subtitle="`更多${activity.City}活動`" />
+      <MoreList
+        title="還有這些不能錯過活動"
+        :subtitle="`更多${activity.City}活動`"
+        :data="moreActivities"
+        @clickItem="pushPage"
+      />
       <div class="mb-32" />
     </main>
   </div>
 </template>
 
 <script>
+import cities from '@/assets/json/city.json'
 import Carousel from '@/components/Carousel.vue'
 import MoreList from '@/components/attraction/MoreList.vue'
 
@@ -117,9 +123,13 @@ export default {
     const { id } = params
 
     let activity = {}
+    let moreActivities = []
     try {
       const res = await $axios.get(`/v2/Tourism/Activity?$filter=contains(ID, '${id}')`)
       activity = res.data[0]
+      const engCity = cities.data.filter(city => city.chinese === activity.City)[0].eng
+      const moreActivitiesRes = await $axios.get(`/v2/Tourism/Activity/${engCity}?$top=4`)
+      moreActivities = moreActivitiesRes.data
     } catch (err) { console.log(err) }
 
     let picturesArr = Object.keys(activity.Picture).filter(key => key.match('PictureUrl'))
@@ -127,16 +137,21 @@ export default {
       const value = activity.Picture[key]
       return { Picture: { PictureUrl1: value } }
     })
-    console.log('log => ', activity)
 
     return {
       activity,
-      picturesArr
+      picturesArr,
+      moreActivities
     }
   },
   computed: {
     formatPhone () {
       return `0${this.activity.Phone.split('886-')[1]}`
+    }
+  },
+  methods: {
+    pushPage (activitiesId) {
+      this.$router.push(`/activity/${activitiesId}`)
     }
   }
 }
