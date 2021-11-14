@@ -67,8 +67,6 @@
 
 <script>
 import Vue from 'vue'
-import JsSHA from 'jssha'
-import pthReq from '@/api/pth-req'
 import Carousel from '@/components/Carousel.vue'
 import RecentActivities from '@/components/index/RecentActivities.vue'
 import HotSpot from '@/components/index/HotSpot.vue'
@@ -81,9 +79,7 @@ export default Vue.extend({
     HotSpot,
     ReturnTasty
   },
-  async asyncData ({ $axios, $getRandom, $setReqAuth }) {
-    $setReqAuth.setPthReqHeader($axios)
-
+  async asyncData ({ $axios, $getRandom }) {
     const filterHasPicture = "$filter=contains(Picture/PictureUrl1, 'http')"
     const [
       { data: activitiesData },
@@ -98,8 +94,8 @@ export default Vue.extend({
     const [r1, r2, r3, r4] = $getRandom.getRamdomArr(4, attractionsData.length - 1)
     const attractions = [attractionsData[r1], attractionsData[r2], attractionsData[r3], attractionsData[r4]]
 
-    const [r5, r6, r7, r8, r9, r10] = $getRandom.getRamdomArr(6, attractionsData.length - 1)
     const attract = attractionsData
+    const [r5, r6, r7, r8, r9, r10] = $getRandom.getRamdomArr(6, attractionsData.length - 1)
     const swiperPics = [attract[r5], attract[r6], attract[r7], attract[r8], attract[r9], attract[r10]]
 
     const [r11, r12, r13, r14] = $getRandom.getRamdomArr(6, activitiesData.length - 1)
@@ -132,20 +128,6 @@ export default Vue.extend({
     },
     hideSearchSelect () {
       this.isSearchSelectShow = false
-    },
-    getAuthorizationHeader () {
-      const AppID = process.env.TRX_ID
-      const AppKey = process.env.TRX_KEY
-      const GMTString = new Date().toUTCString()
-      const ShaObj = new JsSHA('SHA-1', 'TEXT')
-      ShaObj.setHMACKey(AppKey, 'TEXT')
-      ShaObj.update('x-date: ' + GMTString)
-      const HMAC = ShaObj.getHMAC('B64')
-      const Authorization = `hmac username="${AppID}", algorithm="hmac-sha1", headers="x-date", signature="${HMAC}"`
-      this.setPthReqHeader({ Authorization, 'X-Date': GMTString })
-    },
-    setPthReqHeader (data) {
-      pthReq.defaults.headers = data
     }
   }
 })

@@ -5,7 +5,7 @@
         {{ title }}
       </h3>
       <nuxt-link to="/" class="flex items-center text-orange-100">
-        <span>更多宜蘭縣景點</span>
+        <span>{{ subtitle }}</span>
         <span class="material-icons mt-0.5">chevron_right</span>
       </nuxt-link>
     </div>
@@ -30,7 +30,12 @@ export default {
     title: {
       type: String,
       default: '標題',
-      requied: true
+      required: true
+    },
+    subtitle: {
+      type: String,
+      default: '連結',
+      required: true
     }
   }
 }

@@ -4,25 +4,25 @@
       <nuxt-link to="/">
         首頁
       </nuxt-link> /
-      <nuxt-link to="/">
-        探索景點
+      <nuxt-link to="/activities/search">
+        探索活動
       </nuxt-link> /
       <nuxt-link to="/">
-        宜蘭縣
+        {{ activity.City }}
       </nuxt-link> /
-      <span class="text-green-300 cursor-auto">羅東林業文化園區</span>
+      <span class="text-green-300 cursor-auto">{{ activity.Name }}</span>
     </nav>
     <main>
-      <Carousel />
+      <Carousel :places="picturesArr" />
       <h2 class="text-4xl text-black-100 font-light mx-16 mt-8 mb-3">
-        羅東林業文化園區
+        {{ activity.Name }}
       </h2>
       <ul class="flex gap-x-2 text-xl mx-16 mb-8">
-        <li class="text-yellow-200 border border-yellow-200 rounded-full cursor-pointer px-4 py-0.5">
-          # 自然風景類
+        <li v-if="activity.Class1" class="text-yellow-200 border border-yellow-200 rounded-full cursor-pointer px-4 py-0.5">
+          # {{ activity.Class1 }}
         </li>
-        <li class="text-yellow-200 border border-yellow-200 rounded-full cursor-pointer px-4 py-0.5">
-          # 林場類
+        <li v-if="activity.Class2" class="text-yellow-200 border border-yellow-200 rounded-full cursor-pointer px-4 py-0.5">
+          # {{ activity.Class2 }}
         </li>
       </ul>
       <article class="mx-16 mb-16">
@@ -30,34 +30,43 @@
           景點介紹：
         </h3>
         <p class="text-lg font-light leading-8">
-          日治時期台灣有三大林場，分別是：八仙山林場、阿里山林場以及太平山林場。從太平山林場所砍伐的檜木、扁柏等木材，都會運送到羅東出張所和貯木池進行存放，而羅東出張所經過規劃後，成為現今的羅東林業文化園區。羅東林業文化區坐落於羅東市區附近，交通十分方便，園內規劃有貯木池、森林鐵路、竹林車站、蒸汽火車頭、綠林和步道等，從這些設備、建築物中發現當年的林業發展多麼蓬勃，又是多麼地熱鬧，同時也讓人不禁感慨，許多珍貴的檜木消逝在太平山中。隨著林業發展的轉型，可以看見昔日風華的貯木池，零散放著當時砍伐的檜木，如今，貯木池不再具有貯木的功能，而是成為水鳥和魚兒們的天堂。在園區中散步，彷彿進入一座秘密花園，園內種植滿滿茂密的樹木，不時聽見鳥兒的叫聲，空氣中帶有芬多精與淡淡的檜木香，舒服的環境，令人不禁停下腳步，感受內心的寧靜。
+          {{ activity.Description }}
         </p>
       </article>
       <section class="flex items-start mx-12 mb-16">
         <div class="w-1/2 bg-gray-200 rounded-xl mr-8 p-8">
           <p class="flex flex-nowrap text-black-200 mb-3">
-            <span class="flex-shrink-0 block text-xl font-bold">開放時間：</span>
-            <span class="block text-lg">06:00-19:00</span>
+            <span class="flex-shrink-0 block text-xl font-bold">活動時間：</span>
+            <span class="block text-lg">
+              {{ $dayjs(activity.StartTime).format("YYYY/MM/DD") }} -
+              {{ $dayjs(activity.EndTime).format("YYYY/MM/DD") }}</span>
+          </p>
+          <p v-if="activity.Phone" class="flex flex-nowrap text-black-200 mb-3">
+            <span class="flex-shrink-0 block text-xl font-bold">聯絡電話：</span>
+            <a :href="`tel:+${activity.Phone}`" class="block text-lg">{{ formatPhone }}</a>
           </p>
           <p class="flex flex-nowrap text-black-200 mb-3">
-            <span class="flex-shrink-0 block text-xl font-bold">服務電話：</span>
-            <span class="block text-lg">886-3-9545114</span>
+            <span class="flex-shrink-0 block text-xl font-bold">主辦單位：</span>
+            <span class="block text-lg">{{ activity.Organizer }}</span>
           </p>
           <p class="flex flex-nowrap text-black-200 mb-3">
-            <span class="flex-shrink-0 block text-xl font-bold">景點地址：</span>
-            <span class="block text-lg">宜蘭縣265羅東鎮中正北路118號</span>
+            <span class="flex-shrink-0 block text-black-200 text-xl font-bold">活動地點：</span>
+            <span class="block text-green-100  text-lg">{{ activity.Location }}</span>
           </p>
-          <p class="flex flex-nowrap text-black-200 mb-3">
+          <p v-if="activity.WebsiteUrl" class="flex flex-nowrap text-black-200 mb-3">
             <span class="flex-shrink-0 block text-xl font-bold">官方網站：</span>
-            <span class="block text-lg">https://www.facebook.com/lfcgexhibition/</span>
+            <a
+              class="block text-green-100 text-lg"
+              target="_blank"
+              :href="activity.WebsiteUrl">{{ activity.WebsiteUrl }}</a>
           </p>
-          <p class="flex flex-nowrap text-black-200 mb-3">
-            <span class="flex-shrink-0 block text-xl font-bold">票價資訊：</span>
-            <span class="block text-lg">免費，露營活動另計。</span>
+          <p v-if="activity.Charge" class="flex flex-nowrap text-black-200 mb-3">
+            <span class="flex-shrink-0 block text-xl font-bold">活動費用：</span>
+            <span class="block text-lg">{{ activity.Charge }}</span>
           </p>
-          <p class="flex flex-nowrap text-black-200">
+          <p v-if="activity.Remarks" class="flex flex-nowrap text-black-200">
             <span class="flex-shrink-0 block text-xl font-bold">注意事項：</span>
-            <span class="block text-lg">1、愛護大自然生物，並請維護環境整潔。2、夏季日照與冬季寒風甚強，請預作防範</span>
+            <span class="block text-lg">{{ activity.Remarks }}</span>
           </p>
         </div>
         <div class="w-1/2">
@@ -89,7 +98,7 @@
           </div>
         </div>
       </section>
-      <MoreList title="還有這些不能錯過活動" />
+      <MoreList title="還有這些不能錯過活動" :subtitle="`更多${activity.City}活動`" />
       <div class="mb-32" />
     </main>
   </div>
@@ -103,6 +112,32 @@ export default {
   components: {
     Carousel,
     MoreList
+  },
+  async asyncData ({ $axios, params }) {
+    const { id } = params
+
+    let activity = {}
+    try {
+      const res = await $axios.get(`/v2/Tourism/Activity?$filter=contains(ID, '${id}')`)
+      activity = res.data[0]
+    } catch (err) { console.log(err) }
+
+    let picturesArr = Object.keys(activity.Picture).filter(key => key.match('PictureUrl'))
+    picturesArr = picturesArr.map((key) => {
+      const value = activity.Picture[key]
+      return { Picture: { PictureUrl1: value } }
+    })
+    console.log('log => ', activity)
+
+    return {
+      activity,
+      picturesArr
+    }
+  },
+  computed: {
+    formatPhone () {
+      return `0${this.activity.Phone.split('886-')[1]}`
+    }
   }
 }
 </script>

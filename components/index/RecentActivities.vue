@@ -14,6 +14,7 @@
         v-for="activity in activities"
         :key="activity.ID"
         class="recent-activity-card flex h-40 rounded-lg overflow-hidden border border-gray-100 bg-gray-200"
+        @click="changePage(activity)"
       >
         <div class="w-40 flex-shrink-0 h-full overflow-hidden">
           <img
@@ -54,6 +55,11 @@ export default {
       type: Array,
       default: () => ([{}]),
       required: true
+    }
+  },
+  methods: {
+    changePage (activity) {
+      this.$router.push(`/activity/${activity.ID}`)
     }
   }
 }

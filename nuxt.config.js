@@ -31,7 +31,7 @@ export default {
     { src: '~/plugins/vue-awesome-swiper', ssr: false },
     { src: '~/plugins/simple-bar', ssr: false },
     { src: '~/plugins/getRandom', ssr: true },
-    { src: '~/plugins/setReqAuth', ssr: true },
+    { src: '~/plugins/axios', ssr: true },
   ],
 
   env: {

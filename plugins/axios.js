@@ -1,11 +1,6 @@
 import JsSHA from 'jssha'
 
-const setPthReqHeader = ($axios) => {
-  const authorization = getAuthorizationHeader()
-  $axios.setHeader(authorization)
-}
-
-const getAuthorizationHeader = () => {
+const getAuthHeader = () => {
   const AppID = process.env.TRX_ID
   const AppKey = process.env.TRX_KEY
   const GMTString = new Date().toUTCString()
@@ -17,8 +12,8 @@ const getAuthorizationHeader = () => {
   return { Authorization, 'X-Date': GMTString }
 }
 
-export default ({ app }, inject) => {
-  inject('setReqAuth', {
-    setPthReqHeader
+export default ({ $axios }) => {
+  $axios.onRequest((config) => {
+    config.headers = getAuthHeader()
   })
 }
