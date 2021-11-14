@@ -52,7 +52,7 @@ export default {
   props: {
     activities: {
       type: Array,
-      default: () => ([]),
+      default: () => ([{}]),
       required: true
     }
   }

@@ -81,38 +81,8 @@ export default Vue.extend({
     HotSpot,
     ReturnTasty
   },
-  async asyncData ({ $axios, env }) {
-    const reqQty = 100
-    const getRandomInt = max => Math.floor(Math.random() * max)
-
-    const getRamdomArr = (length) => {
-      const randomNums = []
-      while (randomNums.length < length) {
-        const num = getRandomInt(reqQty)
-        if (!randomNums.includes(num)) {
-          randomNums.push(num)
-        }
-      }
-      return randomNums
-    }
-
-    const setPthReqHeader = (data) => {
-      $axios.defaults.headers = data
-    }
-
-    const getAuthorizationHeader = () => {
-      const AppID = env.TRX_ID
-      const AppKey = env.TRX_KEY
-      const GMTString = new Date().toUTCString()
-      const ShaObj = new JsSHA('SHA-1', 'TEXT')
-      ShaObj.setHMACKey(AppKey, 'TEXT')
-      ShaObj.update('x-date: ' + GMTString)
-      const HMAC = ShaObj.getHMAC('B64')
-      const Authorization = `hmac username="${AppID}", algorithm="hmac-sha1", headers="x-date", signature="${HMAC}"`
-      setPthReqHeader({ Authorization, 'X-Date': GMTString })
-    }
-
-    getAuthorizationHeader()
+  async asyncData ({ $axios, $getRandom, $setReqAuth }) {
+    $setReqAuth.setPthReqHeader($axios)
 
     const filterHasPicture = "$filter=contains(Picture/PictureUrl1, 'http')"
     const [
@@ -120,19 +90,23 @@ export default Vue.extend({
       { data: attractionsData },
       { data: restaurantsData }
     ] = await Promise.all([
-      $axios.get(`${env.TRX_URL}/v2/Tourism/Activity?${filterHasPicture}&$top=${reqQty}`),
-      $axios.get(`${env.TRX_URL}/v2/Tourism/ScenicSpot?${filterHasPicture}&$top=${reqQty}`),
-      $axios.get(`${env.TRX_URL}/v2/Tourism/Restaurant?${filterHasPicture}&$top=${reqQty}`)
+      $axios.get(`/v2/Tourism/Activity?${filterHasPicture}`),
+      $axios.get(`/v2/Tourism/ScenicSpot?${filterHasPicture}`),
+      $axios.get(`/v2/Tourism/Restaurant?${filterHasPicture}`)
     ])
 
-    const [r1, r2, r3, r4] = getRamdomArr(4)
-    const activities = [activitiesData[r1], activitiesData[r2], activitiesData[r3], activitiesData[r4]]
+    const [r1, r2, r3, r4] = $getRandom.getRamdomArr(4, attractionsData.length - 1)
     const attractions = [attractionsData[r1], attractionsData[r2], attractionsData[r3], attractionsData[r4]]
-    const restaurants = [restaurantsData[r1], restaurantsData[r2], restaurantsData[r3], restaurantsData[r4]]
 
-    const [r5, r6, r7, r8, r9, r10] = getRamdomArr(6)
+    const [r5, r6, r7, r8, r9, r10] = $getRandom.getRamdomArr(6, attractionsData.length - 1)
     const attract = attractionsData
     const swiperPics = [attract[r5], attract[r6], attract[r7], attract[r8], attract[r9], attract[r10]]
+
+    const [r11, r12, r13, r14] = $getRandom.getRamdomArr(6, activitiesData.length - 1)
+    const activities = [activitiesData[r11], activitiesData[r12], activitiesData[r13], activitiesData[r14]]
+
+    const [r15, r16, r17, r18] = $getRandom.getRamdomArr(4, restaurantsData.length - 1)
+    const restaurants = [restaurantsData[r15], restaurantsData[r16], restaurantsData[r17], restaurantsData[r18]]
 
     return {
       activities,
