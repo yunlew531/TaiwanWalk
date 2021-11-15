@@ -4,7 +4,7 @@
       <h3 class="text-4xl font-light text-black-100 mr-auto">
         一再回訪美食
       </h3>
-      <nuxt-link to="/" class="flex items-center text-orange-100">
+      <nuxt-link to="/restaurants/search?_city=all" class="flex items-center text-orange-100">
         <span>查看更多美食</span>
         <span class="material-icons mt-0.5">chevron_right</span>
       </nuxt-link>

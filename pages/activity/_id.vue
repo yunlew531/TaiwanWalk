@@ -5,7 +5,7 @@
         首頁
       </nuxt-link> /
       <nuxt-link to="/activities/search">
-        探索活動
+        節慶活動
       </nuxt-link> /
       <nuxt-link :to="`/activities/search?_city=${formatCity}`">
         {{ formatCity }}

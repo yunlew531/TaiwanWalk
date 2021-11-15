@@ -4,7 +4,7 @@
       <h3 class="text-4xl font-light text-black-100 mr-auto">
         熱門打卡景點
       </h3>
-      <nuxt-link to="/" class="flex items-center text-orange-100">
+      <nuxt-link to="/attractions/search?_city=all" class="flex items-center text-orange-100">
         <span>查看更多景點</span>
         <span class="material-icons mt-0.5">chevron_right</span>
       </nuxt-link>

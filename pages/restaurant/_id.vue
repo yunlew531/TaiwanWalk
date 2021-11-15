@@ -4,8 +4,8 @@
       <nuxt-link to="/">
         首頁
       </nuxt-link> /
-      <nuxt-link to="/">
-        探索景點
+      <nuxt-link to="/restaurants/search">
+        品嘗美食
       </nuxt-link> /
       <nuxt-link :to="`/restaurants/search?_city=${formatCity}`">
         {{ formatCity }}

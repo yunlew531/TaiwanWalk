@@ -4,7 +4,7 @@
       <nuxt-link to="/">
         首頁
       </nuxt-link> /
-      <nuxt-link to="/">
+      <nuxt-link to="/attractions/search">
         探索景點
       </nuxt-link> /
       <nuxt-link :to="`/attractions/search?_city=${formatCity}`">

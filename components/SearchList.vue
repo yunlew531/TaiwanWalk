@@ -12,7 +12,7 @@
       <h2 class="text-xl font-bold mb-1">
         {{ place.Name }}
       </h2>
-      <h4 class="text-green-300 mr-auto">
+      <h4 v-if="place.City" class="text-green-300 mr-auto">
         <span class="material-icons mr-1 text-sm">fmd_good</span>
         <span>{{ place.City }}</span>
       </h4>

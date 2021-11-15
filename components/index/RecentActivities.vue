@@ -4,7 +4,7 @@
       <h3 class="text-4xl font-light text-black-100 mr-auto">
         近期活動
       </h3>
-      <nuxt-link to="/" class="flex items-center text-orange-100">
+      <nuxt-link to="/activities/search?_city=all" class="flex items-center text-orange-100">
         <span>查看更多活動</span>
         <span class="material-icons mt-0.5">chevron_right</span>
       </nuxt-link>
