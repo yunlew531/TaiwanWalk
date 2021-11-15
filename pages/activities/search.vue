@@ -7,139 +7,34 @@
       <span class="text-green-300 cursor-auto">節慶活動</span>
     </nav>
     <main>
-      <section class="flex mx-16 mb-16">
-        <div class="search-panel relative mr-4">
-          <button
-            type="button"
-            class="w-full flex items-center border border-gray-100 rounded-md px-8 py-2"
-            @click="toggleCityList"
-          >
-            <span class="block font-medium text-green-200 mr-auto">{{ search.city.chinese }}</span>
-            <span class="material-icons text-green-500 block">expand_more</span>
-          </button>
-          <client-only>
-            <simplebar
-              v-show="isCitySelectShow"
-              data-simplebar-auto-hide="false"
-              class="city-list border border-gray-100 absolute mt-2"
-            >
-              <ul class="w-full overflow-hidden bg-white-100 rounded-md pr-6">
-                <li
-                  class="text-green-300 border-b border-gray-100 cursor-pointer px-8 py-2 hover:text-green-200"
-                  @click="selectCity({ chinese: '全部縣市' })"
-                >
-                  全部縣市
-                </li>
-                <li
-                  v-for="city in cities"
-                  :key="city.eng"
-                  class="text-green-300 border-b border-gray-100 cursor-pointer px-8 py-2 hover:text-green-200"
-                  @click="selectCity(city)"
-                >
-                  {{ city.chinese }}
-                </li>
-              </ul>
-            </simplebar>
-          </client-only>
-        </div>
-        <div
-          class="date-selector flex relative text-gray-400 flex-grow border border-gray-100 rounded-md px-8 py-2 mr-4"
-          :class="{ active: search.date }"
-        >
-          <input
-            v-model="search.date"
-            type="date"
-            class="bg-gray-100 absolute left-0 top-0 w-full h-full focus:outline-none"
-          >
-          <span
-            class="select-date-text text-green-200 font-medium mr-auto"
-            :class="{ hide: search.date }"
-          >選擇日期</span>
-          <span class="material-icons text-green-200">date_range</span>
-        </div>
-        <input
-          v-model="search.content"
-          type="text"
-          placeholder="你想去哪裡？請輸入關鍵字"
-          class="text-gray-400 flex-grow border border-gray-100 rounded-md px-8 py-2 mr-4 focus:outline-none"
-        >
-        <button
-          type="button"
-          class="flex justify-center items-center text-white-100 bg-green-200 border border-gray-100 rounded-md px-8 py-2"
-          @click="searchPlace"
-        >
-          <span class="material-icons mr-2">search</span>
-          <span class="font-bold">
-            <span class="mr-5">搜</span>
-            <span>尋</span>
-          </span>
-        </button>
-      </section>
-      <section v-show="type === 'normal'" class="px-16">
+      <SearchBar
+        ref="searchBarRef"
+        :date="true"
+        class="mx-16 mb-16"
+        @search="searchPlace"
+      />
+      <section v-show="!isSearched" class="px-16">
         <h3 class="text-4xl font-light text-black-100 mb-3 px-2">
           熱門主題
         </h3>
-        <ul class="grid grid-cols-4 gap-x-8 gap-y-3">
-          <li class="festival h-32 flex justify-center items-center rounded-3xl">
-            <h2 class="text-2xl font-bold text-white-100 tracking-widest">
-              節慶活動
-            </h2>
-          </li>
-          <li class="bike h-32 flex justify-center items-center rounded-3xl">
-            <h2 class="text-2xl font-bold text-white-100 tracking-widest">
-              自行車活動
-            </h2>
-          </li>
-          <li class="casual h-32 flex justify-center items-center rounded-3xl">
-            <h2 class="text-2xl font-bold text-white-100 tracking-widest">
-              遊憩活動
-            </h2>
-          </li>
-          <li class="industry h-32 flex justify-center items-center rounded-3xl">
-            <h2 class="text-2xl font-bold text-white-100 tracking-widest">
-              產業文化活動
-            </h2>
-          </li>
-          <li class="year h-32 flex justify-center items-center rounded-3xl">
-            <h2 class="text-2xl font-bold text-white-100 tracking-widest">
-              年度活動
-            </h2>
-          </li>
-          <li class="season h-32 flex justify-center items-center rounded-3xl">
-            <h2 class="text-2xl font-bold text-white-100 tracking-widest">
-              四季活動
-            </h2>
-          </li>
-        </ul>
+        <Subjects :data="subjects" @clickItem="searchSubject" />
       </section>
-      <div v-show="type === 'searched'" class="mx-14">
-        <button
-          type="button"
-          class="flex items-center text-green-200 mb-1"
-          @click="type = 'normal'"
-        >
-          <span class="material-icons mr-1">reply</span>
-          <span class="text-lg">返回</span>
-        </button>
-        <h3 class="inline-block text-black-100 font-light text-4xl mb-4 mr-1">
-          搜尋結果
-        </h3>
-        <span class="text-lg text-green-300">
-          共有
-          <span class="text-yellow-200">{{ places.length }}</span>
-          筆
-        </span>
-      </div>
+      <SeachResultBar
+        v-show="isSearched"
+        :length="places.length"
+        class="mx-14"
+        @back="resetSearch"
+      />
       <SearchList
-        v-show="type === 'searched'"
-        class="mx-12 mb-20"
+        v-show="places.length"
+        class="mx-12"
         :data="displayPlaces"
         @clickItem="pushPage"
       />
       <Pagination
-        v-show="type === 'searched'"
+        v-show="places.length && places.length > 20"
         :pages="pages"
-        class="mx-12 mb-24"
+        class="mx-12"
         @change="changePage"
       />
     </main>
@@ -147,33 +42,86 @@
 </template>
 
 <script>
-import city from '@/assets/json/city.json'
-import calcPage from '@/mixins/calcPage.vue'
+import SearchBar from '@/components/SearchBar.vue'
+import Subjects from '@/components/Subjects.vue'
+import SeachResultBar from '@/components/SeachResultBar.vue'
 import SearchList from '@/components/SearchList.vue'
 import Pagination from '@/components/Pagination.vue'
 
 export default {
   components: {
+    SearchBar,
+    Subjects,
+    SeachResultBar,
     SearchList,
     Pagination
   },
-  mixins: [calcPage],
-  asyncData () {
-    const cities = city.data
+  async asyncData ({ query, $axios, $translateCity, $filterHasImgs, $calcPage }) {
+    let { _city } = query
+    const { _content, _subject } = query
+    let places = []
+    let pages = {}
+    const subjects = [
+      { title: '節慶活動', file: 'festival.png' },
+      { title: '自行車活動', file: 'bike.png' },
+      { title: '遊憩活動', file: 'casual.png' },
+      { title: '產業文化活動', file: 'industry.png' },
+      { title: '年度活動', file: 'year.png' },
+      { title: '四季活動', file: 'season.png' }
+    ]
+
+    if (_city && !_content) {
+      let url = ''
+
+      if (_city === 'all') {
+        url = '/v2/Tourism/Activity'
+      } else {
+        _city = $translateCity.chineseToEng(_city)
+        url = `/v2/Tourism/Activity/${_city}`
+      }
+
+      try {
+        const res = await $axios.get(url)
+        places = $filterHasImgs(res.data)
+        pages = $calcPage(places.length)
+      } catch (err) { console.log(err) }
+    }
+
+    if (_city && _content) {
+      let url = ''
+
+      if (_city === 'all') {
+        url = `/v2/Tourism/Activity?$filter=contains(Name, '${encodeURI(_content)}')`
+      } else {
+        _city = $translateCity.chineseToEng(_city)
+        url = `/v2/Tourism/Activity/${_city}?$filter=contains(Name, '${encodeURI(_content)}')`
+      }
+
+      try {
+        const res = await $axios.get(url)
+        places = $filterHasImgs(res.data)
+        pages = $calcPage(places.length)
+      } catch (err) { console.log(err) }
+    }
+
+    if (!_city && !_content && _subject) {
+      const url = `/v2/Tourism/Activity?$filter=contains(Class1, '${encodeURI(_subject)}')`
+
+      try {
+        const res = await $axios.get(url)
+        places = $filterHasImgs(res.data)
+        pages = $calcPage(places.length)
+      } catch (err) { console.dir(err) }
+    }
 
     return {
-      cities
+      places,
+      subjects,
+      pages
     }
   },
   data () {
     return {
-      // 'normal' / 'searched'
-      type: 'normal',
-      isCitySelectShow: false,
-      search: {
-        city: { chinese: '全部縣市' },
-        content: ''
-      },
       places: [],
       pages: {}
     }
@@ -184,49 +132,54 @@ export default {
       const minIdx = (currentPage - 1) * 20
       const maxIdx = currentPage * 20 - 1
       return this.places.filter((place, idx) => idx >= minIdx && idx <= maxIdx)
+    },
+    isSearched () {
+      const isSearchCity = this.$route.query._city
+      const isSearchContent = this.$route.query._content
+      const isSearchSubject = this.$route.query._subject
+      return isSearchCity || isSearchContent || isSearchSubject
+    }
+  },
+  watch: {
+    '$route.path': {
+      handler () {
+        this.$router.go()
+      },
+      deep: true
     }
   },
   methods: {
-    toggleCityList () {
-      this.isCitySelectShow = !this.isCitySelectShow
-    },
-    showCityList () {
-      this.isCitySelectShow = true
-    },
-    hideCityList () {
-      this.isCitySelectShow = false
-    },
-    selectCity (city) {
-      this.search.city = city
-      this.hideCityList()
-    },
     changePage (page) {
-      window.scrollTo({ top: 0 })
       this.pages.currentPage = page
     },
     pushPage (activitiesId) {
       this.$router.push(`/activity/${activitiesId}`)
     },
-    async searchPlace () {
-      this.type = 'searched'
-      const { content, city } = this.search
-      let data = []
+    resetSearch () {
+      this.places = []
+      this.$router.push({ name: 'activities-search' })
+    },
+    searchSubject (subject) {
+      this.$router.push({ name: 'activities-search', query: { _subject: subject } })
+    },
+    searchPlace (search) {
+      const { city, content } = search
 
-      try {
-        if (content) {
-          const filter = `?$filter=contains(Name, '${content}')`
-          const res = await this.$axios.get(`/v2/Tourism/Activity${filter}`)
-          data = res.data.filter(place => place.Picture.PictureUrl1)
-        } else if (!content && city.chinese === '全部縣市') {
-          const res = await this.$axios.get('/v2/Tourism/Activity')
-          data = res.data.filter(place => place.Picture.PictureUrl1)
+      if (content) {
+        if (city.chinese === '全部縣市') {
+          this.$router.push({ name: 'activities-search', query: { _city: 'all', _content: content } })
         } else {
-          const res = await this.$axios.get(`/v2/Tourism/Activity/${city.eng}`)
-          data = res.data.filter(place => place.Picture.PictureUrl1)
+          this.$router.push({ name: 'activities-search', query: { _city: city.chinese, _content: content } })
         }
-        this.places = data
-        this.pages = this.calcPage(data.length)
-      } catch (err) { console.dir(err) }
+      }
+
+      if (!content) {
+        if (city.chinese === '全部縣市') {
+          this.$router.push({ name: 'activities-search', query: { _city: 'all' } })
+        } else {
+          this.$router.push({ name: 'activities-search', query: { _city: city.chinese } })
+        }
+      }
     }
   }
 }
@@ -236,11 +189,9 @@ export default {
 .main-container {
   max-width: 1200px;
 }
-.search-panel, .date-selector {
+.date-selector {
   max-width: 240px;
   width: 100%;
-}
-.date-selector {
   input {
     background: transparent;
     padding: 0 32px;
@@ -256,32 +207,9 @@ export default {
     }
   }
 }
-.festival {
-  background: url(@/assets/images/festival.png) center no-repeat;
-}
-.bike {
-  background: url(@/assets/images/bike.png) center no-repeat;
-}
-.casual {
-  background: url(@/assets/images/casual.png) center no-repeat;
-}
-.industry {
-  background: url(@/assets/images/industry.png) center no-repeat;
-}
-.year {
-  background: url(@/assets/images/year.png) center no-repeat;
-}
-.season {
-  background: url(@/assets/images/season.png) center no-repeat;
-}
-.festival, .bike, .casual, .industry, .year, .season {
-  background-size: cover;
-}
 .city-list {
   max-height: 350px;
-  border-radius: 6px;
   position: absolute;
-  width: 100%;
   li {
     margin-top: -1px;
     &:first-of-type {

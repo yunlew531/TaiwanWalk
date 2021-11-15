@@ -10,11 +10,16 @@
       </nuxt-link>
     </div>
     <ul class="grid grid-cols-4 gap-x-8 px-12">
-      <li v-for="restaurant in restaurants" :key="restaurant.ID">
+      <li
+        v-for="restaurant in restaurants"
+        :key="restaurant.ID"
+        @click="$router.push(`/restaurant/${restaurant.ID}`)"
+      >
         <img
           v-if="restaurant.Picture"
           :src="restaurant.Picture.PictureUrl1"
           :alt="restaurant.Picture.PictureDescription1"
+          onerror="this.onerror=null;this.src='https://cdn.pixabay.com/photo/2017/06/08/17/32/not-found-2384304_960_720.jpg'"
           class="h-48 w-full object-cover rounded-2xl mb-3"
         >
         <h2 class="text-xl font-bold mb-1">

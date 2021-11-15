@@ -21,6 +21,7 @@
             v-if="activity.Picture"
             :src="activity.Picture.PictureUrl1"
             :alt="activity.Picture.PictureDescription1"
+            onerror="this.onerror=null;this.src='https://cdn.pixabay.com/photo/2017/06/08/17/32/not-found-2384304_960_720.jpg'"
             class="w-full h-full"
           >
         </div>

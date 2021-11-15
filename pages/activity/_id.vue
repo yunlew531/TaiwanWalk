@@ -7,8 +7,8 @@
       <nuxt-link to="/activities/search">
         探索活動
       </nuxt-link> /
-      <nuxt-link to="/">
-        {{ activity.City }}
+      <nuxt-link :to="`/activities/search?_city=${formatCity}`">
+        {{ formatCity }}
       </nuxt-link> /
       <span class="text-green-300 cursor-auto">{{ activity.Name }}</span>
     </nav>
@@ -100,9 +100,10 @@
       </section>
       <MoreList
         title="還有這些不能錯過活動"
-        :subtitle="`更多${activity.City}活動`"
+        :subtitle="`更多${formatCity}活動`"
         :data="moreActivities"
         @clickItem="pushPage"
+        @clickMore="$router.push(`/activities/search?_city=${formatCity}`)"
       />
       <div class="mb-32" />
     </main>
@@ -110,7 +111,6 @@
 </template>
 
 <script>
-import cities from '@/assets/json/city.json'
 import Carousel from '@/components/Carousel.vue'
 import MoreList from '@/components/attraction/MoreList.vue'
 
@@ -119,7 +119,7 @@ export default {
     Carousel,
     MoreList
   },
-  async asyncData ({ $axios, params }) {
+  async asyncData ({ $axios, params, $translateCity }) {
     const { id } = params
 
     let activity = {}
@@ -127,7 +127,7 @@ export default {
     try {
       const res = await $axios.get(`/v2/Tourism/Activity?$filter=contains(ID, '${id}')`)
       activity = res.data[0]
-      const engCity = cities.data.filter(city => city.chinese === activity.City)[0].eng
+      const engCity = $translateCity.chineseToEng(activity.City || activity.Address.slice(0, 3))
       const moreActivitiesRes = await $axios.get(`/v2/Tourism/Activity/${engCity}?$top=4`)
       moreActivities = moreActivitiesRes.data
     } catch (err) { console.log(err) }
@@ -147,6 +147,9 @@ export default {
   computed: {
     formatPhone () {
       return `0${this.activity.Phone.split('886-')[1]}`
+    },
+    formatCity () {
+      return this.activity.City || this.activity.Address.slice(0, 3)
     }
   },
   methods: {

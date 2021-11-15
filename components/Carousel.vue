@@ -1,5 +1,5 @@
 <template>
-  <section class="relative mx-12 mb-12">
+  <section v-if="places.length" class="relative mx-12 mb-12">
     <client-only>
       <swiper ref="swiperRef" :options="swiperOption" class="overflow-x-hidden rounded-2xl">
         <div
@@ -11,6 +11,7 @@
             v-if="place.Picture"
             :src="place.Picture.PictureUrl1"
             :alt="place.Picture.PictureDescription1"
+            onerror="this.onerror=null;this.src='https://cdn.pixabay.com/photo/2017/06/08/17/32/not-found-2384304_960_720.jpg'"
             class="w-full object-cover"
           >
           <h2 v-if="title" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white-100 text-3xl">

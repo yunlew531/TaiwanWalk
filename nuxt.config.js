@@ -32,6 +32,9 @@ export default {
     { src: '~/plugins/simple-bar', ssr: false },
     { src: '~/plugins/getRandom', ssr: true },
     { src: '~/plugins/axios', ssr: true },
+    { src: '~/plugins/translateCity', ssr: true },
+    { src: '~/plugins/filterHasImgs', ssr: true },
+    { src: '~/plugins/calcPage', ssr: true },
   ],
 
   env: {

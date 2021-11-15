@@ -7,22 +7,22 @@
       <nuxt-link to="/">
         探索景點
       </nuxt-link> /
-      <nuxt-link to="/">
-        宜蘭縣
+      <nuxt-link :to="`/attractions/search?_city=${formatCity}`">
+        {{ formatCity }}
       </nuxt-link> /
-      <span class="text-green-300 cursor-auto">羅東林業文化園區</span>
+      <span class="text-green-300 cursor-auto">{{ attraction.Name }}</span>
     </nav>
     <main>
-      <Carousel />
+      <Carousel :places="picturesArr" />
       <h2 class="text-4xl text-black-100 font-light mx-16 mt-8 mb-3">
-        羅東林業文化園區
+        {{ attraction.Name }}
       </h2>
       <ul class="flex gap-x-2 text-xl mx-16 mb-8">
-        <li class="text-yellow-200 border border-yellow-200 rounded-full cursor-pointer px-4 py-0.5">
-          # 自然風景類
+        <li v-if="attraction.Class1" class="text-yellow-200 border border-yellow-200 rounded-full cursor-pointer px-4 py-0.5">
+          # {{ attraction.Class1 }}
         </li>
-        <li class="text-yellow-200 border border-yellow-200 rounded-full cursor-pointer px-4 py-0.5">
-          # 林場類
+        <li v-if="attraction.Class2" class="text-yellow-200 border border-yellow-200 rounded-full cursor-pointer px-4 py-0.5">
+          # {{ attraction.Class2 }}
         </li>
       </ul>
       <article class="mx-16 mb-16">
@@ -30,34 +30,37 @@
           景點介紹：
         </h3>
         <p class="text-lg font-light leading-8">
-          日治時期台灣有三大林場，分別是：八仙山林場、阿里山林場以及太平山林場。從太平山林場所砍伐的檜木、扁柏等木材，都會運送到羅東出張所和貯木池進行存放，而羅東出張所經過規劃後，成為現今的羅東林業文化園區。羅東林業文化區坐落於羅東市區附近，交通十分方便，園內規劃有貯木池、森林鐵路、竹林車站、蒸汽火車頭、綠林和步道等，從這些設備、建築物中發現當年的林業發展多麼蓬勃，又是多麼地熱鬧，同時也讓人不禁感慨，許多珍貴的檜木消逝在太平山中。隨著林業發展的轉型，可以看見昔日風華的貯木池，零散放著當時砍伐的檜木，如今，貯木池不再具有貯木的功能，而是成為水鳥和魚兒們的天堂。在園區中散步，彷彿進入一座秘密花園，園內種植滿滿茂密的樹木，不時聽見鳥兒的叫聲，空氣中帶有芬多精與淡淡的檜木香，舒服的環境，令人不禁停下腳步，感受內心的寧靜。
+          {{ attraction.Description }}
         </p>
       </article>
       <section class="flex items-start mx-12 mb-16">
         <div class="w-1/2 bg-gray-200 rounded-xl mr-8 p-8">
-          <p class="flex flex-nowrap text-black-200 mb-3">
+          <p v-if="formatOpenTime" class="flex flex-nowrap text-black-200 mb-3">
             <span class="flex-shrink-0 block text-xl font-bold">開放時間：</span>
-            <span class="block text-lg">06:00-19:00</span>
+            <span class="block text-lg whitespace-pre-wrap">{{ formatOpenTime }}</span>
           </p>
-          <p class="flex flex-nowrap text-black-200 mb-3">
+          <p v-if="attraction.Phone" class="flex flex-nowrap text-black-200 mb-3">
             <span class="flex-shrink-0 block text-xl font-bold">服務電話：</span>
-            <span class="block text-lg">886-3-9545114</span>
+            <a :href="`tel:+${attraction.Phone}`" class="block text-lg">{{ formatPhone }}</a>
           </p>
-          <p class="flex flex-nowrap text-black-200 mb-3">
+          <p v-if="attraction.Address" class="flex flex-nowrap text-black-200 mb-3">
             <span class="flex-shrink-0 block text-xl font-bold">景點地址：</span>
-            <span class="block text-lg">宜蘭縣265羅東鎮中正北路118號</span>
+            <span class="block text-lg">{{ attraction.Address }}</span>
           </p>
-          <p class="flex flex-nowrap text-black-200 mb-3">
+          <p v-if="attraction.WebsiteUrl" class="flex flex-nowrap text-black-200 mb-3">
             <span class="flex-shrink-0 block text-xl font-bold">官方網站：</span>
-            <span class="block text-lg">https://www.facebook.com/lfcgexhibition/</span>
+           <a
+            class="block text-green-100 text-lg"
+            target="_blank"
+            :href="attraction.WebsiteUrl">{{ attraction.WebsiteUrl }}</a>
           </p>
-          <p class="flex flex-nowrap text-black-200 mb-3">
+          <p v-if="attraction.TicketInfo" class="flex flex-nowrap text-black-200 mb-3">
             <span class="flex-shrink-0 block text-xl font-bold">票價資訊：</span>
-            <span class="block text-lg">免費，露營活動另計。</span>
+            <span class="block text-lg">{{ attraction.TicketInfo }}</span>
           </p>
-          <p class="flex flex-nowrap text-black-200">
+          <p v-if="attraction.Remarks" class="flex flex-nowrap text-black-200">
             <span class="flex-shrink-0 block text-xl font-bold">注意事項：</span>
-            <span class="block text-lg">1、愛護大自然生物，並請維護環境整潔。2、夏季日照與冬季寒風甚強，請預作防範</span>
+            <span class="block text-lg">{{ attraction.Remarks }}</span>
           </p>
         </div>
         <div class="w-1/2">
@@ -89,7 +92,13 @@
           </div>
         </div>
       </section>
-      <MoreList title="還有這些不能錯過的景點" />
+      <MoreList
+        title="還有這些不能錯過的景點"
+        :subtitle="`更多${formatCity}景點`"
+        :data="moreAttraction"
+        @clickItem="pushPage"
+        @clickMore="$router.push(`/attractions/search?_city=${formatCity}`)"
+      />
       <div class="mb-32" />
     </main>
   </div>
@@ -103,6 +112,61 @@ export default {
   components: {
     Carousel,
     MoreList
+  },
+  async asyncData ({ $axios, params, $translateCity }) {
+    const { id } = params
+
+    let attraction = {}
+    let moreAttraction = []
+    try {
+      const res = await $axios.get(`/v2/Tourism/ScenicSpot?$filter=contains(ID, '${id}')`)
+      attraction = res.data[0]
+      const engCity = $translateCity.chineseToEng(attraction.City || attraction.Address.slice(0, 3))
+      const moreAttractionRes = await $axios.get(`/v2/Tourism/ScenicSpot/${engCity}?$top=4`)
+      moreAttraction = moreAttractionRes.data
+    } catch (err) { console.log(err) }
+
+    let picturesArr = Object.keys(attraction.Picture).filter(key => key.match('PictureUrl'))
+    picturesArr = picturesArr.map((key) => {
+      const value = attraction.Picture[key]
+      return { Picture: { PictureUrl1: value } }
+    })
+
+    return {
+      attraction,
+      picturesArr,
+      moreAttraction
+    }
+  },
+  computed: {
+    formatPhone () {
+      return `0${this.attraction.Phone.split('886-')[1]}`
+    },
+    formatOpenTime () {
+      let time = this.attraction.OpenTime
+
+      if (time) {
+        time = time.replaceAll('hours', '小時')
+        time = time.replaceAll('；', '\n')
+        time = time.replace('Sun', '星期日: ')
+        time = time.replace('Mon', '星期一: ')
+        time = time.replace('Tue', '星期二: ')
+        time = time.replace('Wed', '星期三: ')
+        time = time.replace('Thu', '星期四: ')
+        time = time.replace('Fri', '星期五: ')
+        time = time.replace('Sat', '星期六: ')
+      }
+
+      return time
+    },
+    formatCity () {
+      return this.attraction.City || this.attraction.Address.slice(0, 3)
+    }
+  },
+  methods: {
+    pushPage (attractionId) {
+      this.$router.push(`/attraction/${attractionId}`)
+    }
   }
 }
 </script>
