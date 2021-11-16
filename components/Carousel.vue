@@ -6,6 +6,7 @@
           v-for="place in places"
           :key="place.ID"
           class="swiper-slide"
+          @click="$router.push(`/attraction/${place.ID}`)"
         >
           <img
             v-if="place.Picture"

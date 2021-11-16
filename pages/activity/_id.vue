@@ -58,7 +58,10 @@
             <a
               class="block text-green-100 text-lg"
               target="_blank"
-              :href="activity.WebsiteUrl">{{ activity.WebsiteUrl }}</a>
+              :href="activity.WebsiteUrl"
+            >
+              {{ activity.WebsiteUrl }}
+            </a>
           </p>
           <p v-if="activity.Charge" class="flex flex-nowrap text-black-200 mb-3">
             <span class="flex-shrink-0 block text-xl font-bold">活動費用：</span>
@@ -70,15 +73,7 @@
           </p>
         </div>
         <div class="w-1/2">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d4298.528081312345!2d121.51848972707104!3d25.04707355140966!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a9727e339109%3A0xc34a31ce3a4abecb!2z6Ie65YyX6LuK56uZ!5e0!3m2!1szh-TW!2stw!4v1636751178514!5m2!1szh-TW!2stw"
-            width="540"
-            height="250"
-            style="border:0;"
-            allowfullscreen=""
-            loading="lazy"
-            class="w-full rounded-xl mb-8"
-          />
+          <Leaflet :position="activity.Position" />
           <h4 class="text-xl font-bold text-black-200 mb-5">
             周邊資訊：
           </h4>
@@ -112,11 +107,13 @@
 
 <script>
 import Carousel from '@/components/Carousel.vue'
+import Leaflet from '@/components/Leaflet.vue'
 import MoreList from '@/components/attraction/MoreList.vue'
 
 export default {
   components: {
     Carousel,
+    Leaflet,
     MoreList
   },
   async asyncData ({ $axios, params, $translateCity }) {

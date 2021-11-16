@@ -1,15 +1,22 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'taiwan-walk',
+    title: '台灣走走 • Tai Walk',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'zh-Hant-TW'
     },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
-      { name: 'format-detection', content: 'telephone=no' }
+      { hid: 'description', name: 'description', content: '探索台灣之美，讓我們更親近這片土地。台灣活動、景點、美食盡在台灣走走 • Tai Walk' },
+      { name: 'format-detection', content: 'telephone=no' },
+      { name: 'keywords', content: '台灣活動、景點、美食' },
+      { property: 'og:locale', itemprop: 'zh_TW' },
+      { property: 'og:title', itemprop: 'name', content: '台灣走走 • Tai Walk' },
+      { property: 'og:url', itemprop: 'url', content: 'https://taiwan-walk-88914.herokuapp.com' },
+      { property: 'og:image', itemprop: 'image', content: 'https://i.imgur.com/qf7BzGv.jpg' },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:site_name', content: '台灣走走 • Tai Walk' },
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -35,6 +42,7 @@ export default {
     { src: '~/plugins/translateCity', ssr: true },
     { src: '~/plugins/filterHasImgs', ssr: true },
     { src: '~/plugins/calcPage', ssr: true },
+    {src: '~/plugins/vue-leaflet', ssr: false },
   ],
 
   env: {
