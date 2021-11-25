@@ -36,10 +36,11 @@ export default {
         attribution: 'Map data: © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: © <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
       }).addTo(map)
       L.marker(position, { icon: this.redIcon }).addTo(map)
-      /* eslint-disable */
+      /* eslint-enable */
       this.map = map
     },
     creatRedIcon () {
+      // eslint-disable-next-line
       this.redIcon = new L.Icon({
         iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',

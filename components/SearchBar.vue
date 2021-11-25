@@ -59,7 +59,7 @@
     >
     <button
       type="button"
-      class="flex justify-center items-center text-white-100 bg-green-200 border border-gray-100 rounded-md px-8 py-2"
+      class="flex justify-center items-center text-white-100 bg-green-200 border duration-200 border-gray-100 rounded-md px-8 py-2 hover:bg-green-400"
       @click="$emit('search', search)"
     >
       <span class="material-icons mr-2">search</span>

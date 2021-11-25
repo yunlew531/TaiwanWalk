@@ -36,7 +36,7 @@
     <button
       type="button"
       class="w-full flex justify-center items-center text-white-100 font-bold bg-green-200
-        rounded-md px-8 py-2 mb-2"
+        rounded-md duration-200 px-8 py-2 mb-2 hover:bg-green-400"
       @click="searchContent"
     >
       <span class="material-icons mr-3">search</span>

@@ -10,7 +10,7 @@
         >
           <img
             v-if="place.Picture"
-            :src="place.Picture.PictureUrl1"
+            :src="place.Picture.PictureUrl1 || 'https://cdn.pixabay.com/photo/2017/06/08/17/32/not-found-2384304_960_720.jpg'"
             :alt="place.Picture.PictureDescription1"
             onerror="this.onerror=null;this.src='https://cdn.pixabay.com/photo/2017/06/08/17/32/not-found-2384304_960_720.jpg'"
             class="w-full object-cover"

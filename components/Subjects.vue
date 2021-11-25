@@ -5,10 +5,10 @@
         v-for="subject in data"
         :key="subject.title"
         :style="{ 'background-image': `url(${require(`@/assets/images/${subject.file}`)})` }"
-        class="h-32 flex justify-center items-center rounded-3xl bg-no-repeat bg-center bg-cover"
+        class="group h-32 flex justify-center items-center rounded-3xl bg-no-repeat bg-center bg-cover cursor-pointer"
         @click="$emit('clickItem', subject.title)"
       >
-        <h2 class="text-2xl font-bold text-white-100 tracking-widest">
+        <h2 class="text-2xl font-bold text-white-100 tracking-widest duration-200 group-hover:text-white-200">
           {{ subject.title }}
         </h2>
       </li>

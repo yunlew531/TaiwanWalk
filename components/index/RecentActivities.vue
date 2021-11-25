@@ -4,7 +4,7 @@
       <h3 class="text-4xl font-light text-black-100 mr-auto">
         近期活動
       </h3>
-      <nuxt-link to="/activities/search?_city=all" class="flex items-center text-orange-100">
+      <nuxt-link to="/activities/search?_city=all" class="flex items-center text-orange-100 duration-200 transform hover:translate-x-1.5">
         <span>查看更多活動</span>
         <span class="material-icons mt-0.5">chevron_right</span>
       </nuxt-link>
@@ -13,13 +13,13 @@
       <li
         v-for="activity in activities"
         :key="activity.ID"
-        class="recent-activity-card flex h-40 rounded-lg overflow-hidden border border-gray-100 bg-gray-200"
+        class="recent-activity-card flex h-40 rounded-lg overflow-hidden border border-gray-100 bg-gray-200 cursor-pointer"
         @click="changePage(activity)"
       >
         <div class="w-40 flex-shrink-0 h-full overflow-hidden">
           <img
             v-if="activity.Picture"
-            :src="activity.Picture.PictureUrl1"
+            :src="activity.Picture.PictureUrl1 || 'https://cdn.pixabay.com/photo/2017/06/08/17/32/not-found-2384304_960_720.jpg'"
             :alt="activity.Picture.PictureDescription1"
             onerror="this.onerror=null;this.src='https://cdn.pixabay.com/photo/2017/06/08/17/32/not-found-2384304_960_720.jpg'"
             class="w-full h-full"

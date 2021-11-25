@@ -1,6 +1,6 @@
 <template>
   <ul class="grid grid-cols-4 gap-x-8 gap-y-9 mb-20">
-    <li v-for="place in data" :key="place.ID">
+    <li v-for="place in data" :key="place.ID" class="group cursor-pointer">
       <img
         v-if="place.Picture.PictureUrl1"
         :src="place.Picture.PictureUrl1"
@@ -9,7 +9,7 @@
         onerror="this.onerror=null;this.src='https://cdn.pixabay.com/photo/2017/06/08/17/32/not-found-2384304_960_720.jpg'"
         @click="$emit('clickItem', place.ID)"
       >
-      <h2 class="text-xl font-bold mb-1">
+      <h2 class="text-xl font-bold duration-200 mb-1 group-hover:text-green-200">
         {{ place.Name }}
       </h2>
       <h4 v-if="place.City" class="text-green-300 mr-auto">
