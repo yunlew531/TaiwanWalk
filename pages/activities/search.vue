@@ -58,7 +58,7 @@ export default {
   },
   async asyncData ({ query, $axios, $translateCity, $filterHasImgs, $calcPage }) {
     let { _city } = query
-    const { _content, _subject } = query
+    const { _content, _subject, _near } = query
     let places = []
     let pages = {}
     const subjects = [
@@ -70,7 +70,19 @@ export default {
       { title: '四季活動', file: 'season.png' }
     ]
 
-    if (_city && !_content) {
+    if (_near && !_city && !_content && !_subject) {
+      let [latitude, longitude] = _near.split(', ')
+      latitude = Number(latitude)
+      longitude = Number(longitude)
+      const url = `/v2/Tourism/Activity?$spatialFilter=nearby(${latitude}, ${longitude}, 30000)`
+      try {
+        const res = await $axios.get(url)
+        places = $filterHasImgs(res.data)
+        pages = $calcPage(places.length)
+      } catch (err) {}
+    }
+
+    if (_city && !_content && !_near) {
       let url = ''
 
       if (_city === 'all') {
@@ -84,10 +96,10 @@ export default {
         const res = await $axios.get(url)
         places = $filterHasImgs(res.data)
         pages = $calcPage(places.length)
-      } catch (err) { console.log(err) }
+      } catch (err) {}
     }
 
-    if (_city && _content) {
+    if (_city && _content && !_near) {
       let url = ''
 
       if (_city === 'all') {
@@ -101,17 +113,17 @@ export default {
         const res = await $axios.get(url)
         places = $filterHasImgs(res.data)
         pages = $calcPage(places.length)
-      } catch (err) { console.log(err) }
+      } catch (err) {}
     }
 
-    if (!_city && !_content && _subject) {
+    if (_subject && !_near && !_city && !_content) {
       const url = `/v2/Tourism/Activity?$filter=contains(Class1, '${encodeURI(_subject)}')`
 
       try {
         const res = await $axios.get(url)
         places = $filterHasImgs(res.data)
         pages = $calcPage(places.length)
-      } catch (err) { console.dir(err) }
+      } catch (err) {}
     }
 
     return {
@@ -137,11 +149,12 @@ export default {
       const isSearchCity = this.$route.query._city
       const isSearchContent = this.$route.query._content
       const isSearchSubject = this.$route.query._subject
-      return isSearchCity || isSearchContent || isSearchSubject
+      const isSearchNearBy = this.$route.query._near
+      return isSearchCity || isSearchContent || isSearchSubject || isSearchNearBy
     }
   },
   watch: {
-    '$route.path': {
+    '$route.query': {
       handler () {
         this.$router.go()
       },

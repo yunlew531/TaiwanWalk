@@ -74,23 +74,7 @@
         </div>
         <div class="w-1/2">
           <Leaflet :position="activity.Position" />
-          <h4 class="text-xl font-bold text-black-200 mb-5">
-            周邊資訊：
-          </h4>
-          <div class="grid grid-cols-3 gap-x-8">
-            <button type="button" class="flex flex-col justify-center items-center font-bold border border-gray-100 rounded-md py-6">
-              <img src="@/assets/images/nearby-scene30.png" alt="附近景點">
-              <span class="block text-green-200 mt-1">附近景點</span>
-            </button>
-            <button type="button" class="flex flex-col justify-center items-center font-bold border border-gray-100 rounded-md py-6">
-              <img src="@/assets/images/nearby-food30.png" alt="附近活動">
-              <span class="block text-green-200 mt-1">附近活動</span>
-            </button>
-            <button type="button" class="flex flex-col justify-center items-center font-bold border border-gray-100 rounded-md py-6">
-              <img src="@/assets/images/nearby-event30.png" alt="附近美食">
-              <span class="block text-green-200 mt-1">附近美食</span>
-            </button>
-          </div>
+          <Surround :position="activity.Position" />
         </div>
       </section>
       <MoreList
@@ -109,12 +93,14 @@
 import Carousel from '@/components/Carousel.vue'
 import Leaflet from '@/components/Leaflet.vue'
 import MoreList from '@/components/attraction/MoreList.vue'
+import Surround from '~/components/Surround.vue'
 
 export default {
   components: {
     Carousel,
     Leaflet,
-    MoreList
+    MoreList,
+    Surround
   },
   async asyncData ({ $axios, params, $translateCity }) {
     const { id } = params
@@ -127,7 +113,7 @@ export default {
       const engCity = $translateCity.chineseToEng(activity.City || activity.Address.slice(0, 3))
       const moreActivitiesRes = await $axios.get(`/v2/Tourism/Activity/${engCity}?$top=4`)
       moreActivities = moreActivitiesRes.data
-    } catch (err) { console.log(err) }
+    } catch (err) {}
 
     let picturesArr = Object.keys(activity.Picture).filter(key => key.match('PictureUrl'))
     picturesArr = picturesArr.map((key) => {

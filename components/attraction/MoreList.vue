@@ -6,7 +6,7 @@
       </h3>
       <button
         type="button"
-        class="flex items-center text-orange-100"
+        class="flex items-center text-orange-100 transform duration-200 hover:translate-x-1.5"
         @click="$emit('clickMore')"
       >
         <span>{{ subtitle }}</span>
@@ -17,6 +17,7 @@
       <li
         v-for="place in data"
         :key="place.ID"
+        class="group cursor-pointer"
         @click="$emit('clickItem', place.ID)"
       >
         <img
@@ -26,7 +27,7 @@
           onerror="this.onerror=null;this.src='https://cdn.pixabay.com/photo/2017/06/08/17/32/not-found-2384304_960_720.jpg'"
           class="h-48 w-full object-cover rounded-2xl mb-3"
         >
-        <h2 class="text-xl font-bold mb-1">
+        <h2 class="text-xl font-bold duration-200 mb-1 group-hover:text-green-200">
           {{ place.Name }}
         </h2>
         <h4 class="text-green-300 mr-auto">

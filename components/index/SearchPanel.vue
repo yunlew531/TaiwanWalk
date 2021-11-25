@@ -21,7 +21,8 @@
           v-for="type in types"
           :key="type"
           class="cursor-pointer px-8 py-2"
-          @click="selectType(type)">
+          @click="selectType(type)"
+        >
           {{ type }}
         </li>
       </ul>
