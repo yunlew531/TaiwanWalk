@@ -1,6 +1,6 @@
 const getRandomInt = max => Math.floor(Math.random() * max)
 
-const getRamdomArr = (length, maxNum) => {
+const getRandomArr = (length, maxNum) => {
   const randomNums = []
   while (randomNums.length < length) {
     const num = getRandomInt(maxNum)
@@ -14,6 +14,6 @@ const getRamdomArr = (length, maxNum) => {
 export default ({ app }, inject) => {
   inject('getRandom', {
     getRandomInt,
-    getRamdomArr
+    getRandomArr
   })
 }

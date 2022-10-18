@@ -12,9 +12,9 @@
     <ul class="grid grid-cols-4 gap-x-8 px-12">
       <li
         v-for="restaurant in restaurants"
-        class="group cursor-pointer"
         :key="restaurant.ID"
-        @click="$router.push(`/restaurant/${restaurant.ID}`)"
+        class="group cursor-pointer"
+        @click="$router.push(`/restaurant/${restaurant.RestaurantID}`)"
       >
         <img
           v-if="restaurant.Picture"
@@ -24,7 +24,7 @@
           class="h-48 w-full object-cover rounded-2xl mb-3"
         >
         <h2 class="text-xl font-bold duration-200 mb-1 group-hover:text-green-200">
-          {{ restaurant.Name }}
+          {{ restaurant.RestaurantName }}
         </h2>
         <h4 class="text-green-300 mr-auto">
           <span class="material-icons mr-1 text-sm">fmd_good</span>

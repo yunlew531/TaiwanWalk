@@ -4,9 +4,9 @@
       <swiper ref="swiperRef" :options="swiperOption" class="overflow-x-hidden rounded-2xl">
         <div
           v-for="place in places"
-          :key="place.ID"
+          :key="place.ScenicSpotID"
           class="swiper-slide"
-          @click="$router.push(`/attraction/${place.ID}`)"
+          @click="$router.push(`/attraction/${place.ScenicSpotID}`)"
         >
           <img
             v-if="place.Picture"

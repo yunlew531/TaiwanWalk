@@ -31,7 +31,7 @@
             {{ $dayjs(activity.EndTime).format("YYYY/MM/DD") }}
           </span>
           <h2 class="flex-grow text-black-200 text-xl font-bold">
-            {{ activity.Name }}
+            {{ activity.ActivityName }}
           </h2>
           <div class="flex">
             <h4 class="text-green-300 mr-auto">
@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     changePage (activity) {
-      this.$router.push(`/activity/${activity.ID}`)
+      this.$router.push(`/activity/${activity.ActivityID}`)
     }
   }
 }

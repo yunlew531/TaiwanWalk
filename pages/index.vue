@@ -43,17 +43,17 @@ export default Vue.extend({
       $axios.get(`/v2/Tourism/Restaurant?${filterHasPicture}`)
     ])
 
-    const [r1, r2, r3, r4] = $getRandom.getRamdomArr(4, attractionsData.length - 1)
+    const [r1, r2, r3, r4] = $getRandom.getRandomArr(4, attractionsData.length - 1)
     const attractions = [attractionsData[r1], attractionsData[r2], attractionsData[r3], attractionsData[r4]]
 
     const attract = attractionsData
-    const [r5, r6, r7, r8, r9, r10] = $getRandom.getRamdomArr(6, attractionsData.length - 1)
+    const [r5, r6, r7, r8, r9, r10] = $getRandom.getRandomArr(6, attractionsData.length - 1)
     const swiperPics = [attract[r5], attract[r6], attract[r7], attract[r8], attract[r9], attract[r10]]
 
-    const [r11, r12, r13, r14] = $getRandom.getRamdomArr(6, activitiesData.length - 1)
+    const [r11, r12, r13, r14] = $getRandom.getRandomArr(4, activitiesData.length - 1)
     const activities = [activitiesData[r11], activitiesData[r12], activitiesData[r13], activitiesData[r14]]
 
-    const [r15, r16, r17, r18] = $getRandom.getRamdomArr(4, restaurantsData.length - 1)
+    const [r15, r16, r17, r18] = $getRandom.getRandomArr(4, restaurantsData.length - 1)
     const restaurants = [restaurantsData[r15], restaurantsData[r16], restaurantsData[r17], restaurantsData[r18]]
 
     return {

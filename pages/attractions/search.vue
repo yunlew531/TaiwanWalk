@@ -17,7 +17,7 @@
         </h3>
         <Subjects :data="subjects" @clickItem="searchSubject" />
       </section>
-      <SeachResultBar
+      <SearchResultBar
         v-show="isSearched"
         :length="places.length"
         class="mx-14"
@@ -42,7 +42,7 @@
 <script>
 import SearchBar from '@/components/SearchBar.vue'
 import Subjects from '@/components/Subjects.vue'
-import SeachResultBar from '@/components/SeachResultBar.vue'
+import SearchResultBar from '~/components/SearchResultBar.vue'
 import SearchList from '@/components/SearchList.vue'
 import Pagination from '@/components/Pagination.vue'
 
@@ -50,7 +50,7 @@ export default {
   components: {
     SearchBar,
     Subjects,
-    SeachResultBar,
+    SearchResultBar,
     SearchList,
     Pagination
   },

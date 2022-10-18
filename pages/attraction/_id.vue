@@ -10,12 +10,12 @@
       <nuxt-link :to="`/attractions/search?_city=${formatCity}`">
         {{ formatCity }}
       </nuxt-link> /
-      <span class="text-green-300 cursor-auto">{{ attraction.Name }}</span>
+      <span class="text-green-300 cursor-auto">{{ attraction.ScenicSpotName }}</span>
     </nav>
     <main>
       <Carousel :places="picturesArr" />
       <h2 class="text-4xl text-black-100 font-light mx-16 mt-8 mb-3">
-        {{ attraction.Name }}
+        {{ attraction.ScenicSpotName }}
       </h2>
       <ul class="flex gap-x-2 text-xl mx-16 mb-8">
         <li v-if="attraction.Class1" class="text-yellow-200 border border-yellow-200 rounded-full cursor-pointer px-4 py-0.5">
@@ -98,11 +98,10 @@ export default {
   },
   async asyncData ({ $axios, params, $translateCity }) {
     const { id } = params
-
     let attraction = {}
     let moreAttraction = []
     try {
-      const res = await $axios.get(`/v2/Tourism/ScenicSpot?$filter=contains(ID, '${id}')`)
+      const res = await $axios.get(`/v2/Tourism/ScenicSpot?$filter=contains(ScenicSpotID, '${id}')`)
       attraction = res.data[0]
       const engCity = $translateCity.chineseToEng(attraction.City || attraction.Address.slice(0, 3))
       const moreAttractionRes = await $axios.get(`/v2/Tourism/ScenicSpot/${engCity}?$top=4`)

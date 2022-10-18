@@ -10,12 +10,12 @@
       <nuxt-link :to="`/restaurants/search?_city=${formatCity}`">
         {{ formatCity }}
       </nuxt-link> /
-      <span class="text-green-300 cursor-auto">{{ restaurant.Name }}</span>
+      <span class="text-green-300 cursor-auto">{{ restaurant.RestaurantName }}</span>
     </nav>
     <main>
       <Carousel :places="picturesArr" />
       <h2 class="text-4xl text-black-100 font-light mx-16 mt-8 mb-3">
-        {{ restaurant.Name }}
+        {{ restaurant.RestaurantName }}
       </h2>
       <ul class="flex gap-x-2 text-xl mx-16 mb-8">
         <li v-if="restaurant.Class" class="text-yellow-200 border border-yellow-200 rounded-full cursor-pointer px-4 py-0.5">
@@ -91,7 +91,7 @@ export default {
     let restaurant = {}
     let moreRestaurants = []
     try {
-      const res = await $axios.get(`/v2/Tourism/Restaurant?$filter=contains(ID, '${id}')`)
+      const res = await $axios.get(`/v2/Tourism/Restaurant?$filter=contains(RestaurantID, '${id}')`)
       restaurant = res.data[0]
       const engCity = $translateCity.chineseToEng(restaurant.City || restaurant.Address.slice(0, 3))
       const moreRestaurantsRes = await $axios.get(`/v2/Tourism/Restaurant/${engCity}?$top=4`)
